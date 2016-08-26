@@ -80,6 +80,30 @@ var getUnanswered = function(tags) {
 };
 
 // this takes the answerer object returned by Stackoverflow request and returns the new result to be appended to the DOM
+var showAnswerer = function(user) {
+  // clone our result template code
+  var result = $('.templates .answerer').clone();
+
+  // set the answerer properties in the result
+  var answererElem = result.find('.user-name a');
+  answererElem.attr('href', user.link);
+  answererElem.text(user.display_name);
+
+  // set the reputation value in the result
+  var reputation = result.find('.reputation');
+  var repValue = user.reputation;
+  reputation.text(repValue);
+
+  // set the post count in the result
+  var postCount = result.find('.post-count');
+  var postCountValue = items[i].post_count;
+  postCount.text(postCountValue);
+
+  // set the score in the result
+  var score = result.find('.score');
+  var scoreValue = items[i].score;
+  score.text(scoreValue);
+};
 
 $(document).ready(function() {
   $('.unanswered-getter').submit(function(e) {
