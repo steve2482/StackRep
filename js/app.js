@@ -6,19 +6,16 @@ var showQuestion = function(question) {
   var result = $('.templates .question').clone();
 
   // Set the question properties in result
-
   var questionElem = result.find('.question-text a');
   questionElem.attr('href', question.link);
   questionElem.text(question.title);
 
 	// set the date asked property in result
-
   var asked = result.find('.asked-date');
   var date = new Date(1000 * question.creation_date);
   asked.text(date.toString());
 
 	// set the .viewed for question property in result
-
   var viewed = result.find('.viewed');
   viewed.text(question.view_count);
 
@@ -35,14 +32,12 @@ var showQuestion = function(question) {
 
 // this function takes the results object from StackOverflow
 // and returns the number of results and tags to be appended to DOM
-
 var showSearchResults = function(query, resultNum) {
   var results = resultNum + ' results for <strong>' + query + '</strong>';
   return results;
 };
 
 // takes error string and turns it into displayable DOM element
-
 var showError = function(error) {
   var errorElem = $('.templates .error').clone();
   var errorText = '<p>' + error + '</p>';
@@ -51,7 +46,6 @@ var showError = function(error) {
 
 // takes a string of semi-colon separated tags to be searched
 // for on StackOverflow
-
 var getUnanswered = function(tags) {
 // the parameters we need to pass in our request to StackOverflow's API
   var request = {
@@ -84,6 +78,8 @@ var getUnanswered = function(tags) {
   $('.search-results').append(errorElem);
 	});
 };
+
+// this takes the answerer object returned by Stackoverflow request and returns the new result to be appended to the DOM
 
 $(document).ready(function() {
   $('.unanswered-getter').submit(function(e) {
