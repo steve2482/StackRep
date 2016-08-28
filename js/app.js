@@ -79,31 +79,54 @@ var getUnanswered = function(tags) {
 	});
 };
 
+// -----beginning of MY CODE--------
+
 // this takes the answerer object returned by Stackoverflow request and returns the new result to be appended to the DOM
-var showAnswerer = function(user) {
+var showAnswerer = function(item) {
   // clone our result template code
   var result = $('.templates .answerer').clone();
-
   // set the answerer properties in the result
   var answererElem = result.find('.user-name a');
-  answererElem.attr('href', user.link);
-  answererElem.text(user.display_name);
+  answererElem.attr('href', item.user.link);
+  answererElem.text(item.user.display_name);
 
   // set the reputation value in the result
   var reputation = result.find('.reputation');
-  var repValue = user.reputation;
+  var repValue = item.user.reputation;
   reputation.text(repValue);
 
   // set the post count in the result
   var postCount = result.find('.post-count');
-  var postCountValue = items[i].post_count;
+  var postCountValue = item.post_count;
   postCount.text(postCountValue);
 
   // set the score in the result
   var score = result.find('.score');
-  var scoreValue = items[i].score;
+  var scoreValue = item.score;
   score.text(scoreValue);
+  return result;
 };
+
+var getAnswerer = function(tagRequested) {
+  // parameters needed to pass our request
+  var request = {
+    tag: tagRequested,
+    period: 'all_time',
+    site: 'stackoverflow'
+  };
+  $.getJSON('http://api.stackexchange.com/2.2/tags/' + request.tag + '/top-answerers/all_time?site=stackoverflow')
+    .done(function(result) {
+      console.log(result);
+      var searchResults = showSearchResults(request.tag, result.items.length);
+      $('.search-results').html(searchResults);
+      $.each(result.items, function(i, item) {
+        var answerer = showAnswerer(item);
+        $('.results').append(answerer);
+      });
+    });
+};
+
+// -------end of MY CODE-----------
 
 $(document).ready(function() {
   $('.unanswered-getter').submit(function(e) {
@@ -113,5 +136,15 @@ $(document).ready(function() {
 		// get the value of the tags the user submitted
     var tags = $(this).find("input[name='tags']").val();
     getUnanswered(tags);
+  });
+
+  // ------beginning of MY CODE--------
+
+  $('.inspiration-getter').submit(function(e) {
+    e.preventDefault();
+    $('.results').html('');
+    var tagRequested = $(this).find("input[name='answerers']").val();
+    console.log(tagRequested);
+    getAnswerer(tagRequested);
   });
 });
