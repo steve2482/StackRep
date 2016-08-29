@@ -56,7 +56,7 @@ var getUnanswered = function(tags) {
   };
 
   $.ajax({
-    url: "http://api.stackexchange.com/2.2/questions/unanswered",
+    url: "https://api.stackexchange.com/2.2/questions/unanswered",
     data: request,
     dataType: "jsonp", // use jsonp to avoid cross origin issues
     type: "GET"
@@ -114,7 +114,7 @@ var getAnswerer = function(tagRequested) {
     period: 'all_time',
     site: 'stackoverflow'
   };
-  $.getJSON('http://api.stackexchange.com/2.2/tags/' + request.tag + '/top-answerers/all_time?site=stackoverflow')
+  $.getJSON('https://api.stackexchange.com/2.2/tags/' + request.tag + '/top-answerers/all_time?site=stackoverflow')
     .done(function(result) {
       console.log(result);
       var searchResults = showSearchResults(request.tag, result.items.length);
