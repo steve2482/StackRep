@@ -110,15 +110,20 @@ var showAnswerer = function(item) {
 var getAnswerer = function(tagRequested) {
   // parameters needed to pass our request
   var request = {
-    tag: tagRequested,
-    period: 'all_time',
+    tagged: tagRequested,
     site: 'stackoverflow'
   };
-  $.getJSON('https://api.stackexchange.com/2.2/tags/' + request.tag + '/top-answerers/all_time?site=stackoverflow')
+  $.ajax({
+    url: 'https://api.stackexchange.com/2.2/tags/' + request.tagged + '/top-answerers/all_time',
+    data: request,
+    dataType: 'jsonp', // use jsonp to avoid cross origin issues
+    type: 'GET'
+  })
+  // $.getJSON('https://api.stackexchange.com/2.2/tags/' + request.tag + '/top-answerers/all_time?site=stackoverflow')
     .done(function(result) {
       console.log(result);
-      var searchResults = showSearchResults(request.tag, result.items.length);
-      $('.search-results').html(searchResults);
+      // var searchResults = showSearchResults(request.tagged, result.items.length);
+      // $('.search-results').html(searchResults);
       $.each(result.items, function(i, item) {
         var answerer = showAnswerer(item);
         $('.results').append(answerer);
